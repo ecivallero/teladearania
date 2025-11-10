@@ -117,19 +117,6 @@ button:focus-visible {
   color: var(--muted);
 }
 
-.fig {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.fig svg {
-  max-width: 100%;
-  height: auto;
-  color: var(--accent);
-}
-
 ul.clean {
   list-style: none;
   padding: 0;
@@ -146,37 +133,4 @@ code {
   background: rgba(127, 127, 127, 0.08);
   padding: 0.1em 0.3em;
   border-radius: 0.25em;
-}
-
-/* dark-mode toggle (pure CSS) */
-.theme-toggle {
-  position: fixed;
-  right: 1rem;
-  top: 1rem;
-  z-index: 1000;
-}
-
-.theme-toggle input {
-  position: absolute;
-  opacity: 0;
-}
-
-.theme-toggle label {
-  display: inline-block;
-  padding: 0.4rem 0.6rem;
-  border: 1px solid var(--line);
-  border-radius: 0.5rem;
-  cursor: pointer;
-  background: transparent;
-  color: var(--fg);
-  font: 12px/1 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
-}
-
-/* optional manual toggle: data-theme on html */
-html[data-theme='light'] {
-  color-scheme: light;
-}
-
-html[data-theme='dark'] {
-  color-scheme: dark;
 }
