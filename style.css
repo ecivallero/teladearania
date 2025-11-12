@@ -1,22 +1,50 @@
 /* Tela de Araña — minimal studio CSS */
 
+/* === 0. Font === */
+
 @font-face {
   font-family: 'New Tegomin';
-  src: url('/fonts/NewTegomin-Regular.ttf') format('truetype');
+  src: url('fonts/NewTegomin-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
+/* === 1. Design variables === */
+
 :root {
+  /* colors */
   --bg: #ffffff;
   --fg: #111111;
   --muted: #666666;
   --accent: #333333;
   --link: #7a0022;
   --line: #e6e6e6;
+
+  /* layout */
   --maxch: 70ch;
+
+  /* brand / logo block */
+  --brand-w: 680px;      /* overall width of logo block */
+  --circle-d: 240px;     /* circle (web) diameter */
+  --thread-h: 100px;     /* visible length of hanging thread */
+  --gap: 22px;           /* spacing between circle and wordmark row */
+
+  --title-size: 4.8rem;  /* wordmark size */
+  --title-track: 0.01em;
+
+  /* logo animation timings */
+  --t-fade: 2.2s;   /* circle fade */
+  --t-drop: 2.6s;   /* thread drop */
+  --t-slide: 2.0s;  /* word slides */
+
+  --delay-circle: .20s;
+  --delay-thread: 1.20s;
+  --delay-left:   2.20s;
+  --delay-right:  2.45s;
 }
+
+/* dark mode palette */
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -28,6 +56,8 @@
     --line: #2a2a2a;
   }
 }
+
+/* === 2. Global reset / base === */
 
 * {
   box-sizing: border-box;
@@ -44,6 +74,8 @@ body {
   font: 16px/1.7 ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
+/* main layout blocks */
+
 main {
   max-width: 960px;
   margin: 0 auto;
@@ -56,6 +88,8 @@ footer {
   margin: 0 auto;
   padding: 1.25rem 1rem;
 }
+
+/* typography */
 
 h1,
 h2,
@@ -72,10 +106,10 @@ h1 {
 .lead {
   max-width: var(--maxch);
   color: var(--muted);
-  text-align: center;        /* centers text */
-  margin: 3rem auto 0;       /* adds vertical space before; centers block */
-  font-size: 1.15rem;        /* a touch larger for emphasis */
-  line-height: 1.6;          /* better readability */
+  text-align: center;
+  margin: 3rem auto 0;    /* space from logo; centered block */
+  font-size: 1.15rem;
+  line-height: 1.6;
 }
 
 hr {
@@ -108,6 +142,8 @@ button:focus-visible {
   font-size: 0.95rem;
   color: var(--muted);
 }
+
+/* simple grid helper */
 
 .grid {
   display: grid;
@@ -146,36 +182,21 @@ code {
   border-radius: 0.25em;
 }
 
+/* footer */
+
 footer {
   text-align: center;
 }
 
 footer .small {
   max-width: var(--maxch);
-  margin: 1.25rem auto 0; /* space above; centered block */
+  margin: 1.25rem auto 0;
   line-height: 1.6;
 }
 
-/* Variables (feel free to tweak sizes) */
-:root{
-  --brand-w: 680px;      /* overall width of the logo block */
-  --circle-d: 240px;     /* circle size */
-  --thread-h: 100px;      /* visual length of the hanging thread in the row */
-  --gap: 6px;           /* spacing between circle and the wordmark row */
+/* === 3. Brand block (logo + wordmark) === */
 
-  --title-size: 4.8rem;  /* bigger title */
-  --title-track: 0.01em;
-
-  /* slow, calm pacing */
-  --t-fade: 2.2s;  /* circle fade */
-  --t-slide: 2.0s; /* left/right slide */
-  --delay-circle: .20s;
-  --delay-left:   1.20s;
-  --delay-right:  1.40s;
-}
-
-/* container */
-.brand{
+.brand {
   width: var(--brand-w);
   margin: 0 auto;
   display: grid;
@@ -184,104 +205,165 @@ footer .small {
 }
 
 /* circle fades in */
-.brand-circle{
+
+.brand-circle {
   width: var(--circle-d);
   height: auto;
   opacity: 0;
-  animation: tdaFade var(--t-fade) ease-out var(--delay-circle) forwards;
+  animation: tdaFade var(--t-fade) cubic-bezier(.16, 1, .3, 1) var(--delay-circle) forwards;
+  will-change: opacity;
 }
 
-/* WORDMARK: grid with 3 columns: left | thread | right */
-.brand-wordmark{
-    width: var(--brand-w);                   /* <-- critical */
+/* wordmark row: left | thread | right */
+
+.brand-wordmark {
+  width: var(--brand-w);     /* align center with circle */
   display: grid;
   grid-template-columns: 1fr auto 1fr;
-  align-items: end;            /* align text bottoms with thread bottom */
-  column-gap: 14px;            /* space between text and thread */
+  align-items: end;
+  column-gap: 14px;
   white-space: nowrap;
 
-  font: var(--title-size)/1.05 'New Tegomin', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  font: var(--title-size)/1.05 'New Tegomin', ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   letter-spacing: var(--title-track);
   color: var(--fg);
 }
 
-/* thread: use natural width; control height; PULL IT UP */
-.brand-thread{
+/* thread: natural width, controlled height, pulled up to kiss the circle */
+
+.brand-thread {
   display: block;
   width: auto;
   height: var(--thread-h);
-  justify-self: center;   /* <-- pins it on the middle column center */
+  justify-self: center;
   align-self: end;
-  margin-top: -40px;      /* adjust to kiss the circle */
+  margin-top: -40px;              /* adjust so it visually attaches to circle */
   transform-origin: top center;
   transform: scaleY(0);
   opacity: .01;
-  animation: tdaDrop 2.4s ease-out .9s forwards;
+  animation: tdaDrop var(--t-drop) cubic-bezier(.16, 1, .3, 1) var(--delay-thread) forwards;
+  will-change: opacity, transform;
 }
-.brand-wordmark .left  { justify-self: end;  }
-.brand-wordmark .right { justify-self: start; }
 
-/* left/right spans slide into their own grid cells */
+/* left / right terms flank the thread */
+
 .brand-wordmark .left,
-.brand-wordmark .right{
-  display:inline-block;
-  opacity:0;
+.brand-wordmark .right {
+  display: inline-block;
+  opacity: 0;
   will-change: transform, opacity;
-  animation-timing-function: cubic-bezier(.16,1,.3,1);
 }
 
-.brand-wordmark .left{
-  transform: translateX(-12%);
-  animation: tdaSlideL var(--t-slide) ease-out var(--delay-left) forwards;
-}
-.brand-wordmark .right{
-  transform: translateX(12%);
-  animation: tdaSlideR var(--t-slide) ease-out var(--delay-right) forwards;
+.brand-wordmark .left {
+  justify-self: end;
+  transform: translateX(-10%);
+  animation: tdaSlideL var(--t-slide) cubic-bezier(.16, 1, .3, 1) var(--delay-left) forwards;
 }
 
-/* animations */
-@keyframes tdaFade { to { opacity: 1; } }
+.brand-wordmark .right {
+  justify-self: start;
+  transform: translateX(10%);
+  animation: tdaSlideR var(--t-slide) cubic-bezier(.16, 1, .3, 1) var(--delay-right) forwards;
+}
+
+/* brand animations */
+
+@keyframes tdaFade {
+  to { opacity: 1; }
+}
+
 @keyframes tdaDrop {
   0%   { transform: scaleY(0); opacity: .01; }
   30%  { opacity: 1; }
   100% { transform: scaleY(1); opacity: 1; }
 }
-@keyframes tdaSlideL { to { transform: translateX(0); opacity: 1; } }
-@keyframes tdaSlideR { to { transform: translateX(0); opacity: 1; } }
 
-/* accessibility */
-@media (prefers-reduced-motion: reduce){
-  *{ animation: none !important; transition: none !important; }
+@keyframes tdaSlideL {
+  to { transform: translateX(0); opacity: 1; }
 }
 
-/* Very-slow, ritual pacing */
-:root{
-  --t-fade: 2.2s;     /* circle fade */
-  --t-drop: 2.6s;     /* thread drop */
-  --t-slide: 2.0s;    /* word slides */
-
-  --delay-circle: .20s;
-  --delay-thread: 1.20s;
-  --delay-left:   2.20s;
-  --delay-right:  2.45s;
+@keyframes tdaSlideR {
+  to { transform: translateX(0); opacity: 1; }
 }
 
-/* silkier easing */
-.brand-circle,
-.brand-thread,
-.brand-wordmark .left,
-.brand-wordmark .right{
-  animation-timing-function: cubic-bezier(.16, 1, .3, 1); /* slow-in / long ease-out */
+/* === 4. Motion accessibility === */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 
-/* make the slide look calmer */
-.brand-wordmark .left  { transform: translateX(-10%); }  /* was -16% */
-.brand-wordmark .right { transform: translateX( 10%); }  /* was  16% */
+/* === 5. Language switcher === */
 
-/* give the logo pieces a tiny pre-render hint */
-.brand-circle,
-.brand-thread{ will-change: opacity, transform; }
+.lang {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  gap: .6rem;
+  font: 0.9rem/1 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  padding: .35rem .5rem;
+  border-radius: .5rem;
+  border: 1px solid var(--line);
+  opacity: .85;
+  transition: opacity .2s ease, transform .2s ease;
+  z-index: 10;
+}
 
-/* a touch more breathing room before the title */
-:root{ --gap: 22px; }  /* was 18px */
+.lang:hover {
+  opacity: 1;
+}
 
+.lang a {
+  color: var(--fg);
+  text-decoration: none;
+  opacity: .7;
+}
+
+.lang a[aria-current="page"] {
+  opacity: 1;
+  font-weight: 600;
+}
+
+.lang a:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 2px;
+  border-radius: .2rem;
+}
+
+@media (max-width: 420px) {
+  .lang {
+    top: 10px;
+    right: 10px;
+  }
+}
+
+/* === 6. Section fade-in (.reveal) — simple, robust === */
+
+/* animation itself */
+
+@keyframes fadeRise {
+  from {
+    opacity: 0;
+    transform: translateY(100px);
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* apply to any block with class="reveal" */
+
+.reveal {
+  opacity: 0;
+  animation-name: fadeRise;
+  animation-duration: 4s;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
