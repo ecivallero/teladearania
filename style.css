@@ -340,30 +340,3 @@ footer .small {
     right: 10px;
   }
 }
-
-/* === 6. Section fade-in (.reveal) — simple, robust === */
-
-/* animation itself */
-
-@keyframes fadeRise {
-  from {
-    opacity: 0;
-    transform: translateY(100px);
-    filter: blur(5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
-}
-
-/* apply to any block with class="reveal" */
-
-.reveal {
-  opacity: 0;
-  animation-name: fadeRise;
-  animation-duration: 4s;
-  animation-timing-function: linear;
-  animation-fill-mode: both;
-}
