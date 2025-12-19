@@ -356,7 +356,7 @@ transition: opacity .2s ease;
 }
 
 .topbar-lang a:hover {
-opacity: 9;
+opacity: 1;
 }
 
 .topbar-lang a[aria-current="page"] {
@@ -372,7 +372,7 @@ vertical-align: middle;
 opacity: .85;
 }
 
-/* Mobile banner /
+/* Mobile banner */
 @media (max-width: 560px) {
 :root{
 --brand-w: 100%;
