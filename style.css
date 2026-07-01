@@ -19,6 +19,8 @@ font-display: swap;
 --link: #7a0022;
 --line: #e6e6e6;
 --accent: #d43b2d;
+--panel: #f7f0e3;
+--panel-strong: #efe1cc;
 
 /* layout */
 --maxch: 70ch;
@@ -53,6 +55,8 @@ font-display: swap;
 --accent: #d43b2d;
 --link: #e06666;
 --line: #2a2a2a;
+--panel: #151413;
+--panel-strong: #1d1a17;
 }
 }
 
@@ -103,6 +107,7 @@ h2 {
 position: relative;
 padding-left: 1.9rem;
 line-height: 1.3;
+margin-bottom: .35rem;
 }
 
 h2::before {
@@ -155,6 +160,130 @@ outline-offset: 2px;
 .small {
 font-size: 0.95rem;
 color: var(--muted);
+}
+
+/* In motion */
+
+section.in-motion-wrap {
+max-width: none;
+width: 100vw;
+margin-left: calc(50% - 50vw);
+margin-right: calc(50% - 50vw);
+margin-bottom: 2.75rem;
+padding: 1.7rem 1rem;
+background: var(--panel);
+border-left: 6px solid var(--accent);
+box-shadow: 0 1px 0 var(--line);
+}
+
+.in-motion {
+max-width: var(--maxch);
+margin: 0 auto;
+display: grid;
+grid-template-columns: 1fr;
+gap: 1.35rem;
+}
+
+.motion-head {
+max-width: var(--maxch);
+}
+
+.motion-head h2 {
+margin-top: 0.15rem;
+}
+
+.motion-head p {
+color: var(--muted);
+font-size: 1rem;
+line-height: 1.55;
+}
+
+.motion-list {
+display: grid;
+grid-template-columns: repeat(3, minmax(0, 1fr));
+gap: 1rem;
+}
+
+.motion-item {
+background: var(--bg);
+padding: 0.95rem;
+border-left: 3px solid var(--line);
+transition: border-color .2s ease, transform .2s ease;
+}
+
+.motion-item:hover {
+border-left-color: var(--accent);
+transform: translateX(2px);
+}
+
+.motion-item time {
+display: block;
+margin-bottom: 0.35rem;
+font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
+font-size: 0.72rem;
+letter-spacing: 0.11em;
+text-transform: uppercase;
+color: var(--muted);
+}
+
+.motion-type {
+margin: 0 0 0.25rem 0;
+font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
+font-size: 0.72rem;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: var(--accent);
+font-weight: 700;
+}
+
+.motion-item h3 {
+margin: 0;
+font-size: 1rem;
+line-height: 1.35;
+}
+
+.motion-item h3 a {
+color: var(--fg);
+text-decoration: none;
+}
+
+.motion-item h3 a:hover {
+color: var(--link);
+text-decoration: underline;
+}
+
+.motion-item p {
+margin: 0.4rem 0 0;
+color: var(--muted);
+font-size: 0.94rem;
+line-height: 1.45;
+}
+
+.motion-item .motion-type {
+color: var(--accent);
+}
+
+/* In motion mobile */
+
+@media (max-width: 760px) {
+section.in-motion-wrap {
+padding: 1.35rem 1rem;
+margin-bottom: 2.25rem;
+border-left-width: 4px;
+}
+
+.motion-list {
+grid-template-columns: 1fr;
+gap: 1rem;
+}
+
+.motion-item {
+transform: none;
+}
+
+.motion-item:hover {
+transform: none;
+}
 }
 
 /* Grid */
